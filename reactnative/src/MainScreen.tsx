@@ -5,6 +5,7 @@
  * @format
  */
 
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
@@ -12,6 +13,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
@@ -26,9 +28,14 @@ import {
 
 type SectionProps = PropsWithChildren<{
   title: string;
+  onContentClick?: () => void;
 }>;
 
-function Section({children, title}: SectionProps): React.JSX.Element {
+function Section({
+  children,
+  title,
+  onContentClick,
+}: SectionProps): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -41,15 +48,17 @@ function Section({children, title}: SectionProps): React.JSX.Element {
         ]}>
         {title}
       </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+      <TouchableOpacity onPress={onContentClick} disabled={!onContentClick}>
+        <Text
+          style={[
+            styles.sectionDescription,
+            {
+              color: isDarkMode ? Colors.light : Colors.dark,
+            },
+          ]}>
+          {children}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -72,16 +81,17 @@ function App(): React.JSX.Element {
    */
   const safePadding = '5%';
 
+  const nav = useNavigation();
+
   return (
     <View style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView
-        style={backgroundStyle}>
+      <ScrollView style={backgroundStyle}>
         <View style={{paddingRight: safePadding}}>
-          <Header/>
+          <Header />
         </View>
         <View
           style={{
@@ -89,7 +99,9 @@ function App(): React.JSX.Element {
             paddingHorizontal: safePadding,
             paddingBottom: safePadding,
           }}>
-          <Section title="Step One">
+          <Section
+            title="Step One"
+            onContentClick={() => nav.navigate('Detail')}>
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
           </Section>

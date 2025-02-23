@@ -1,15 +1,18 @@
 // In App.js in a new project
 
 import * as React from 'react';
-import { View, Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {View, Text, TouchableOpacity} from 'react-native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MainScreen from './MainScreen';
 
 function DetailScreen() {
+  const nav = useNavigation();
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Detail Screen</Text>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <TouchableOpacity onPress={() => nav.navigate('Home')}>
+        <Text>Detail Screen</Text>
+      </TouchableOpacity>
     </View>
   );
 }
