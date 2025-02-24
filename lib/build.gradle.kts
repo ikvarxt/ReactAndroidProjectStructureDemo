@@ -1,7 +1,8 @@
-val libPackageMode: String by project
-val isPackageMode = libPackageMode.toBoolean()
-
-extra["isPackageMode"] = isPackageMode
+buildscript {
+    val libPackageMode: String by project
+    extra["isPackageMode"] = libPackageMode.toBoolean()
+    println("isPackageMode: ${extra["isPackageMode"]}")
+}
 
 plugins {
     id("com.android.library")
@@ -10,6 +11,9 @@ plugins {
     `maven-publish`
     id("com.kezong.fat-aar")
 }
+
+val libPackageMode: String by project
+val isPackageMode = libPackageMode.toBoolean()
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -73,7 +77,7 @@ android {
     compileSdk = rootProject.ext["compileSdkVersion"].toString().toInt()
 
     defaultConfig {
-        minSdkVersion(rootProject.ext["minSdkVersion"].toString())
+        minSdk = rootProject.ext["minSdkVersion"].toString().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
