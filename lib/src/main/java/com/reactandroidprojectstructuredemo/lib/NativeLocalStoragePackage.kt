@@ -1,4 +1,4 @@
-package com.reactandroidprojectstructuredemo
+package com.reactandroidprojectstructuredemo.lib
 
 import com.facebook.react.BaseReactPackage
 import com.facebook.react.bridge.NativeModule

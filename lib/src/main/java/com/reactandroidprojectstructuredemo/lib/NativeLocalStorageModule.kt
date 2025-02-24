@@ -1,8 +1,7 @@
-package com.reactandroidprojectstructuredemo
+package com.reactandroidprojectstructuredemo.lib
 
 import android.content.Context
-import android.content.SharedPreferences
-import com.nativelocalstorage.NativeLocalStorageSpec
+import com.reactandroidprojectstructuredemo.NativeLocalStorageSpec
 import com.facebook.react.bridge.ReactApplicationContext
 
 class NativeLocalStorageModule(reactContext: ReactApplicationContext) : NativeLocalStorageSpec(reactContext) {
