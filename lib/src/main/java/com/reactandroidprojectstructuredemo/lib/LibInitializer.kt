@@ -5,6 +5,8 @@ import com.facebook.react.ReactPackage
 object LibInitializer {
 
     fun getReactPackages() : List<ReactPackage> {
-        return emptyList()
+        return listOf(
+            NativeLocalStoragePackage()
+        )
     }
 }
