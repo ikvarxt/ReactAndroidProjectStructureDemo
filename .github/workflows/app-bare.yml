@@ -19,11 +19,20 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
+        
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: npm install
+        run: cd reactnative & npm install
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew :app-bare:assembleDebug
+        run: ../gradlew :app-bare:assembleDebug
       - name: 'Upload .apk'
         uses: actions/upload-artifact@v4
         with:
