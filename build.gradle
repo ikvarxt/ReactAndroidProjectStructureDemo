@@ -10,11 +10,20 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+
+        maven {
+            setUrl("https://jitpack.io")
+            content {
+                includeGroup("com.github.aasitnikov")
+            }
+        }
     }
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+
+        classpath 'com.github.aasitnikov:fat-aar-android:1.4.1'
     }
 }
 

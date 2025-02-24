@@ -1,8 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":lib")
-
-
 pluginManagement {
     repositories {
         google()
@@ -24,3 +21,4 @@ extensions.configure<com.facebook.react.ReactSettingsExtension> {
 rootProject.name = "ReactAndroidProjectStructureDemo"
 include (":app")
 includeBuild("reactnative/node_modules/@react-native/gradle-plugin")
+include(":lib")

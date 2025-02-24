@@ -2,6 +2,8 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("com.facebook.react")
+    `maven-publish`
+    id("com.kezong.fat-aar")
 }
 
 /**
@@ -53,8 +55,8 @@ react {
     //   The list of flags to pass to the Hermes compiler. By default is "-O", "-output-source-map"
     // hermesFlags = ["-O", "-output-source-map"]
 
-    /* Autolinking */
-    autolinkLibrariesWithApp()
+    /* Autolinking with :lib library */
+    autolinkLibrariesWithLibrary()
 }
 
 android {
@@ -74,22 +76,29 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-//    compileOptions {
-//        sourceCompatibility = JavaVersion.VERSION_11
-//        targetCompatibility = JavaVersion.VERSION_11
-//    }
-//    kotlinOptions {
-//        jvmTarget = "11"
-//    }
+
+    publishing {
+        singleVariant("release") {
+        }
+    }
 }
 
 dependencies {
     implementation("com.facebook.react:react-android")
+}
 
-//    implementation("androidx.core:core-ktx:1.15.0")
-//    implementation("androidx.appcompat:appcompat:1.7.0")
-//    implementation("com.google.android.material:material:1.12.0")
-//    testImplementation("junit:junit:4.13.2")
-//    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-//    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+publishing {
+
+    publications.register<MavenPublication>("localTest") {
+        repositories {
+            maven { url = uri(layout.buildDirectory.dir("repo")) }
+        }
+        groupId = "com.reactandroidprojectstructuredemo"
+        artifactId = "lib"
+        version = "0.0.1"
+
+        afterEvaluate {
+            from(components["release"])
+        }
+    }
 }
