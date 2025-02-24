@@ -1,3 +1,8 @@
+val libPackageMode: String by project
+val isPackageMode = libPackageMode.toBoolean()
+
+extra["isPackageMode"] = isPackageMode
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -21,6 +26,8 @@ react {
     codegenDir = file("$rn/node_modules/@react-native/codegen")
     //   The cli.js file which is the React Native CLI entrypoint. Default is ../../node_modules/react-native/cli.js
     cliFile = file("$rn/node_modules/react-native/cli.js")
+
+    jsRootDir = file(rn)
 
     /* Variants */
     //   The list of variants to that are debuggable. For those we're going to
@@ -56,7 +63,9 @@ react {
     // hermesFlags = ["-O", "-output-source-map"]
 
     /* Autolinking with :lib library */
-    autolinkLibrariesWithLibrary()
+    if (isPackageMode) {
+        autolinkLibrariesWithLibrary()
+    }
 }
 
 android {
