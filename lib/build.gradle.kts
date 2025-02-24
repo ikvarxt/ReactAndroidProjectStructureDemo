@@ -97,7 +97,7 @@ android {
 }
 
 dependencies {
-    implementation("com.facebook.react:react-android")
+    implementation("com.facebook.react:react-android:0.78.0")
 }
 
 publishing {
@@ -114,4 +114,8 @@ publishing {
             from(components["release"])
         }
     }
+}
+
+fataar {
+    isTransitive = true
 }

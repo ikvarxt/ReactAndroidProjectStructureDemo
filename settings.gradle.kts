@@ -22,3 +22,4 @@ rootProject.name = "ReactAndroidProjectStructureDemo"
 include (":app")
 includeBuild("reactnative/node_modules/@react-native/gradle-plugin")
 include(":lib")
+include(":app-bare")
