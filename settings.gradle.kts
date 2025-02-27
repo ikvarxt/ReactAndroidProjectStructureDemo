@@ -5,7 +5,7 @@ pluginManagement {
         google()
         mavenCentral()
     }
-    includeBuild("reactnative/node_modules/@react-native/gradle-plugin")
+    includeBuild("RNGP")
 }
 plugins {
     id("com.facebook.react.settings")
@@ -20,6 +20,6 @@ extensions.configure<com.facebook.react.ReactSettingsExtension> {
 }
 rootProject.name = "ReactAndroidProjectStructureDemo"
 include (":app")
-includeBuild("reactnative/node_modules/@react-native/gradle-plugin")
+includeBuild("RNGP")
 include(":lib")
 include(":app-bare")
