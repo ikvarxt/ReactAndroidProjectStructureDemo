@@ -8,6 +8,7 @@
 package com.facebook.react
 
 import com.facebook.react.utils.JsonUtils
+import com.facebook.react.utils.KotlinStdlibCompatUtils.capitalizeCompat
 import com.facebook.react.utils.projectPathToLibraryName
 import java.io.File
 import javax.inject.Inject
@@ -171,6 +172,18 @@ abstract class ReactExtension @Inject constructor(val project: Project) {
     }
   }
 
+  fun autolinkLibrariesWithLibrary() {
+    val inputFile =
+      project.rootProject.layout.buildDirectory
+        .file("generated/autolinking/autolinking.json")
+        .get()
+        .asFile
+    val dependenciesToApply = getGradleDependenciesToApply(inputFile, configType = "embed")
+    dependenciesToApply.forEach { (configuration, path) ->
+      project.dependencies.add(configuration, project.dependencies.project(mapOf("path" to path)))
+    }
+  }
+
   companion object {
     /**
      * Util function to construct a list of Gradle Configuration <-> Project name pairs for
@@ -181,7 +194,7 @@ abstract class ReactExtension @Inject constructor(val project: Project) {
      * @param inputFile The file to read the autolinking configuration from.
      * @return A list of Gradle Configuration <-> Project name pairs.
      */
-    internal fun getGradleDependenciesToApply(inputFile: File): MutableList<Pair<String, String>> {
+    internal fun getGradleDependenciesToApply(inputFile: File, configType: String = "implementation"): MutableList<Pair<String, String>> {
       val model = JsonUtils.fromAutolinkingConfigJson(inputFile)
       val result = mutableListOf<Pair<String, String>>()
       model
@@ -194,11 +207,11 @@ abstract class ReactExtension @Inject constructor(val project: Project) {
             val dependencyConfiguration = deps.platforms?.android?.dependencyConfiguration
             val buildTypes = deps.platforms?.android?.buildTypes ?: emptyList()
             if (buildTypes.isEmpty()) {
-              result.add((dependencyConfiguration ?: "implementation") to ":$nameCleansed")
+              result.add((dependencyConfiguration ?: configType) to ":$nameCleansed")
             } else {
               buildTypes.forEach { buildType ->
                 result.add(
-                    (dependencyConfiguration ?: "${buildType}Implementation") to ":$nameCleansed")
+                    (dependencyConfiguration ?: "${buildType}${configType.capitalizeCompat()}") to ":$nameCleansed")
               }
             }
           }

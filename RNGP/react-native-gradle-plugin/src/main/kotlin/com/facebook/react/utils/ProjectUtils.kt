@@ -20,6 +20,7 @@ import com.facebook.react.utils.PropertyUtils.SCOPED_REACT_NATIVE_ARCHITECTURES
 import java.io.File
 import org.gradle.api.Project
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.internal.extensions.core.extra
 
 internal object ProjectUtils {
 
@@ -129,4 +130,10 @@ internal object ProjectUtils {
 
   internal fun Project.hasPropertySetToFalse(property: String): Boolean =
       this.hasProperty(property) && this.property(property).toString().toBoolean() == false
+
+  internal inline fun <reified T> Project.safeGetExtra(name: String, default: T): T {
+    return if (extra.has(name)) {
+      extra.get(name) as? T ?: default
+    } else default
+  }
 }

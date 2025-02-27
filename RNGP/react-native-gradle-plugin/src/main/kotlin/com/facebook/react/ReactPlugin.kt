@@ -27,6 +27,7 @@ import com.facebook.react.utils.JsonUtils
 import com.facebook.react.utils.NdkConfiguratorUtils.configureReactNativeNdk
 import com.facebook.react.utils.ProjectUtils.isNewArchEnabled
 import com.facebook.react.utils.ProjectUtils.needsCodegenFromPackageJson
+import com.facebook.react.utils.ProjectUtils.safeGetExtra
 import com.facebook.react.utils.ProjectUtils.shouldWarnIfNewArchFlagIsSetInPrealpha
 import com.facebook.react.utils.findPackageJsonFile
 import java.io.File
@@ -36,6 +37,7 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.file.Directory
 import org.gradle.api.provider.Provider
+import org.gradle.internal.cc.base.logger
 import org.gradle.internal.jvm.Jvm
 
 class ReactPlugin : Plugin<Project> {
@@ -89,6 +91,23 @@ class ReactPlugin : Plugin<Project> {
     configureBuildConfigFieldsForLibraries(project)
     configureNamespaceForLibraries(project)
     project.pluginManager.withPlugin("com.android.library") {
+      if (project.name == "lib") {
+        val mode: String
+        if (project.safeGetExtra("isPackageMode", false)) {
+          mode = "PACKAGE"
+          configureReactNativeNdk(project, extension)
+          configureBuildConfigFieldsForApp(project, extension)
+          project.extensions.getByType(AndroidComponentsExtension::class.java).apply {
+            onVariants(selector().all()) { variant ->
+              project.configureReactTasks(variant = variant, config = extension)
+            }
+          }
+          configureAutolinking(project, extension)
+        } else {
+          mode = "dev"
+        }
+        logger.warn("apply RNGP for :lib in $mode mode")
+      }
       configureCodegen(project, extension, rootExtension, isLibrary = true)
     }
   }
