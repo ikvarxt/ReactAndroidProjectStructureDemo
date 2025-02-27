@@ -75,9 +75,4 @@ yarn-error.log
 !.yarn/sdks
 !.yarn/versions
 
-/reactnative/node_modules/*
-# manually include gradle plugin source code
-!/reactnative/node_modules/
-/reactnative/node_modules/@react-native/*
-!/reactnative/node_modules/@react-native/
-!/reactnative/node_modules/@react-native/gradle-plugin/
+**/node_modules
